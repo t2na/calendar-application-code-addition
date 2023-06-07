@@ -6,17 +6,33 @@ var startHour = 6;
 var endHour = 22;
 var rootEl = $('#root');
 var currentDayEl = $('#currentDay');
+var clockEl = $('#currentTime');
+var time = dayjs().format('hh:mm:ss')
+var time24Hour = dayjs().hour();
 
 currentDayEl.text(dayjs().format('MMMM D, YYYY'));
+
+function setTime() {
+  liveTime = dayjs().format('hh:mm:ss A');
+  clockEl.text(liveTime);
+}
+
+setTime();
+setInterval(setTime, 1000);
 
 function createTimeBlock(hour) {
 
   var timeBlockEl = $('<div>');
   timeBlockEl.addClass('row time-block');
+  timeBlockEl.attr('id', 'hour-' + hour);
 
   var hourEl = $('<div>');
   hourEl.addClass('col-2 col-md-1 hour text-center py-3');
   hourEl.text(hour)
+
+  // need to assign an hour classifier
+
+  console.log(time24Hour);
 
   var displayHour = hour;
   var amOrPm = '';
@@ -55,12 +71,36 @@ function createTimeBlock(hour) {
 
   return timeBlockEl;
 
-}
+};
 
 for (let hour = 6; hour <= 22; hour++) {
   var newTimeBlock = createTimeBlock(hour);
   rootEl.append(newTimeBlock);
-}
+};
+
+$('.time-block').each(function() {
+  var currentBlockHour = parseInt($(this).attr('id').split('-')[1]);
+
+  // Add logic here to decide what color the block should be based on the current time
+  if (currentBlockHour < time24Hour) {
+      // If the time block is in the past, color it grey
+      $(this).addClass('past');
+  } else if (currentBlockHour === time24Hour) {
+      // If the time block is in the present hour, color it red
+      $(this).addClass('present');
+  } else {
+      // If the time block is in the future, color it green
+      $(this).addClass('future');
+  }
+});
+
+rootEl.on('click', '.saveBtn', function(event) {
+  console.log(event.target);
+});
+
+rootEl.on('click', '.saveBtn', function(event){
+  
+})
 
 function saveFunction() {
 
@@ -68,7 +108,7 @@ function saveFunction() {
 
 // need to create a save button and event listener where clicking on save button saves text in calendar
 
-saveButtonEl.on
+
 
 $(function () {
   // TODO: Add a listener for click events on the save button. This code should
@@ -78,15 +118,9 @@ $(function () {
   // time-block containing the button that was clicked? How might the id be
   // useful when saving the description in local storage?
   //
-  // TODO: Add code to apply the past, present, or future class to each time
-  // block by comparing the id to the current hour. HINTS: How can the id
-  // attribute of each time-block be used to conditionally add or remove the
-  // past, present, and future classes? How can Day.js be used to get the
-  // current hour in 24-hour time?
-  //
+  // 
   // TODO: Add code to get any user input that was saved in localStorage and set
   // the values of the corresponding textarea elements. HINT: How can the id
   // attribute of each time-block be used to do this?
   //
-  // TODO: Add code to display the current date in the header of the page.
 });

@@ -5,6 +5,9 @@
 var startHour = 6;
 var endHour = 22;
 var rootEl = $('#root');
+var currentDayEl = $('#currentDay');
+
+currentDayEl.text(dayjs().format('MMMM D, YYYY'));
 
 function createTimeBlock(hour) {
 
@@ -14,6 +17,23 @@ function createTimeBlock(hour) {
   var hourEl = $('<div>');
   hourEl.addClass('col-2 col-md-1 hour text-center py-3');
   hourEl.text(hour)
+
+  var displayHour = hour;
+  var amOrPm = '';
+
+  if (hour > 12) {
+    displayHour = (hour - 12);
+    amOrPm = 'PM';
+  } else if (hour === 12) {
+    amOrPm = "PM";
+  } else if (hour === 0) {
+    displayHour = 12;
+    amOrPm = "AM";
+  } else {
+    amOrPm = "AM";
+  }
+
+  hourEl.text(displayHour + amOrPm);
 
   timeBlockEl.append(hourEl);
 
@@ -41,6 +61,14 @@ for (let hour = 6; hour <= 22; hour++) {
   var newTimeBlock = createTimeBlock(hour);
   rootEl.append(newTimeBlock);
 }
+
+function saveFunction() {
+
+}
+
+// need to create a save button and event listener where clicking on save button saves text in calendar
+
+saveButtonEl.on
 
 $(function () {
   // TODO: Add a listener for click events on the save button. This code should

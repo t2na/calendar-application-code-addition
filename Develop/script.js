@@ -63,7 +63,7 @@ function createTimeBlock(hour) {
   saveButtonEl.addClass('btn saveBtn col-2 col-md-1');
 
   var saveIcon = $('<i>');
-  saveIcon.addClass('fas fa-save');
+  saveIcon.addClass('fas saveIcon fa-save');
   saveIcon.attr('aria-hidden', 'true');
 
   saveButtonEl.append(saveIcon);
@@ -94,23 +94,34 @@ $('.time-block').each(function() {
   }
 });
 
+// need to create a save button and event listener where clicking on save button saves text in calendar
+
 rootEl.on('click', '.saveBtn', function(event) {
-  console.log(event.target);
+  console.log(this);
 });
 
 rootEl.on('click', '.saveBtn', function(event){
-  
-})
+  var timeBlockEl = $(this).parent();
+  var textareaEl = timeBlockEl.find('textarea');
+  var enteredText = textareaEl.val();
+  var timeBlockId = timeBlockEl.attr('id');
 
-function saveFunction() {
+  localStorage.setItem(timeBlockId, enteredText)
+});
 
-}
-
-// need to create a save button and event listener where clicking on save button saves text in calendar
-
-
+// need to set the text area of the time blocks to retrieve from local storage
 
 $(function () {
+
+  $('.time-block').each(function(){
+    var timeBlockId = $(this).attr('id');
+
+    var savedText = localStorage.getItem(timeBlockId);
+
+    if (savedText) {
+      $(this).find('textarea').val(savedText);
+    }
+  })
   // TODO: Add a listener for click events on the save button. This code should
   // use the id in the containing time-block as a key to save the user input in
   // local storage. HINT: What does `this` reference in the click listener
